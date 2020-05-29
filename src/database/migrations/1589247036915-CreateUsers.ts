@@ -33,7 +33,7 @@ export default class CreateUsers1589247036915 implements MigrationInterface {
                         type: "timestamp",
                         default: "now()",
                     }, {
-                        name: "delete_at",
+                        name: "deleted_at",
                         type: "timestamp",
                         isNullable: true,
                     }
@@ -51,7 +51,7 @@ export default class CreateUsers1589247036915 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropForeignKey("users", "AppointmentProvider");
+        await queryRunner.dropForeignKey("appointments", "AppointmentProvider");
         await queryRunner.dropTable("users");
     }
 
