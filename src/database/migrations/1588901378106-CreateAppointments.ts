@@ -29,7 +29,7 @@ export default class CreateAppointments1588901378106 implements MigrationInterfa
                         type: "timestamp",
                         default: "now()",
                     }, {
-                        name: "delete_at",
+                        name: "deleted_at",
                         type: "timestamp",
                         isNullable: true,
                     }
