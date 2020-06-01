@@ -1,6 +1,8 @@
 import User from "../models/User";
 import { compare } from "bcryptjs";
 import { getRepository, Unique } from "typeorm";
+import { sign } from "jsonwebtoken";
+const { JWT_SECRET } = require("../../env");
 
 interface Request {
   email: string;
@@ -8,7 +10,7 @@ interface Request {
 }
 
 export default class AuthUserService {
-  public async execute({ email, password }: Request): Promise<User> {
+  public async execute({ email, password }: Request): Promise<string> {
     const userRepository =  getRepository(User);
 
     const user = await userRepository.findOne({ email });
@@ -23,8 +25,11 @@ export default class AuthUserService {
       throw new Error("Incorrect email/password");
     }
 
-    delete user.password;
+    const token = sign({}, JWT_SECRET, {
+      subject: user.id,
+      expiresIn: "1d"
+    });
 
-    return user;
+    return token;
   }
 }
