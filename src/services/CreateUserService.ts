@@ -6,6 +6,7 @@ interface Request {
 import User from "../models/User";
 import { getRepository } from "typeorm";
 import { hash } from "bcryptjs";
+import AppError from "../errors/AppError";
 
 export default class CreateUserService {
   public async execute({ name, email, password }: Request): Promise<User> {
@@ -16,7 +17,7 @@ export default class CreateUserService {
     });
 
     if (checkUserExists) {
-      throw new Error("Email address already used");
+      throw new AppError("Email address already used");
     }
 
     const hashPassword = await hash(password, 8);

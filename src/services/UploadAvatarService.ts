@@ -8,6 +8,8 @@ import { getRepository } from "typeorm";
 import fs from "fs";
 import path from "path";
 import uploadConfig from "../config/upload";
+import AppError from "../errors/AppError";
+
 
 export default class UploadAvatarService {
   public async execute({ user_id, avatarFilename }: Request) {
@@ -16,7 +18,7 @@ export default class UploadAvatarService {
     const user = await userRepository.findOne(user_id);
 
     if(!user) {
-      throw new Error("Only authenticated users can change avatar.");
+      throw new AppError("Only authenticated users can change avatar.", 401);
     }
 
     if(user.avatar) {
