@@ -28,18 +28,14 @@ usersRouter.patch(
   ensureAuthenticated, 
   upload.single("avatar"), 
   async (request, response) => {
-    try {
-      const uploadAvatar = new UploadAvatarService();
+    const uploadAvatar = new UploadAvatarService();
 
-      const user = await uploadAvatar.execute({ 
-        user_id: request.user.id, 
-        avatarFilename: request.file.filename}
-      );
+    const user = await uploadAvatar.execute({ 
+      user_id: request.user.id, 
+      avatarFilename: request.file.filename}
+    );
       
-      return response.status(200).json(user);
-    } catch ({ message }) {
-      return response.status(400).json({ error: message });
-    }
+    return response.status(200).json(user);
 });
 
 export default usersRouter;
