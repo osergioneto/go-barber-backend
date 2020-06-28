@@ -1,9 +1,21 @@
-import { Entity, PrimaryGeneratedColumn, Column, IsNull, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany, ManyToMany, ManyToOne, JoinColumn } from "typeorm";
-import User from "./User";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  IsNull,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+  OneToMany,
+  ManyToMany,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+import User from '@modules/users/infra/typeorm/entities/User';
 
 @Entity('appointments')
 class Appointment {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
@@ -18,7 +30,7 @@ class Appointment {
 
   @CreateDateColumn()
   created_at: Date;
-  
+
   @UpdateDateColumn()
   updated_at: Date;
 

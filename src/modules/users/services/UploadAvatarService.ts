@@ -3,12 +3,12 @@ interface Request {
   avatarFilename: string;
 }
 
-import User from '../infra/typeorm/entities/User';
+import User from '@modules/users/infra/typeorm/entities/User';
 import { getRepository } from 'typeorm';
 import fs from 'fs';
 import path from 'path';
-import uploadConfig from '../config/upload';
-import AppError from '../../../shared/errors/AppError';
+import uploadConfig from '@config/upload';
+import AppError from '@shared/errors/AppError';
 
 export default class UploadAvatarService {
   public async execute({ user_id, avatarFilename }: Request) {

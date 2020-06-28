@@ -1,6 +1,6 @@
-import { Appointment } from '../../../models';
+import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
 import { startOfHour } from 'date-fns';
-import { AppointmentsRepository } from '../../../repositories';
+import AppointmentsRepository from '@modules/appointments/repositories/AppointmentsRepository';
 import { getCustomRepository } from 'typeorm';
 
 interface Request {

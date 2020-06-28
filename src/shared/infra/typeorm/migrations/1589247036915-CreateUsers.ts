@@ -3,7 +3,7 @@ import {
   QueryRunner,
   Table,
   TableForeignKey,
-} from '../../modules/appointments/entities/node_modules/typeorm';
+} from 'typeorm';
 
 export default class CreateUsers1589247036915 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

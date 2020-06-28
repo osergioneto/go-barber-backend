@@ -3,10 +3,10 @@ interface Request {
   email: string;
   password: string;
 }
-import User from '../infra/typeorm/entities/User';
+import User from '@modules/users/infra/typeorm/entities/User';
 import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
-import AppError from '../../../shared/errors/AppError';
+import AppError from '@shared/errors/AppError';
 
 export default class CreateUserService {
   public async execute({ name, email, password }: Request): Promise<User> {

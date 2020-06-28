@@ -1,8 +1,4 @@
-import {
-  MigrationInterface,
-  QueryRunner,
-  Table,
-} from '../../modules/appointments/entities/node_modules/typeorm';
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export default class CreateAppointments1588901378106
   implements MigrationInterface {
