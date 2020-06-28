@@ -1,4 +1,7 @@
-node_modules
-src/config/
-/tmp/*
+.vscode/
+node_modules/
+build/
+temp/
+
+tmp/*
 !tmp/.gitkeep
