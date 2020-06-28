@@ -3,13 +3,12 @@ interface Request {
   avatarFilename: string;
 }
 
-import User from "../models/User";
-import { getRepository } from "typeorm";
-import fs from "fs";
-import path from "path";
-import uploadConfig from "../config/upload";
-import AppError from "../errors/AppError";
-
+import User from '../infra/typeorm/entities/User';
+import { getRepository } from 'typeorm';
+import fs from 'fs';
+import path from 'path';
+import uploadConfig from '../config/upload';
+import AppError from '../../../shared/errors/AppError';
 
 export default class UploadAvatarService {
   public async execute({ user_id, avatarFilename }: Request) {
@@ -17,15 +16,15 @@ export default class UploadAvatarService {
 
     const user = await userRepository.findOne(user_id);
 
-    if(!user) {
-      throw new AppError("Only authenticated users can change avatar.", 401);
+    if (!user) {
+      throw new AppError('Only authenticated users can change avatar.', 401);
     }
 
-    if(user.avatar) {
+    if (user.avatar) {
       const userAvatarFilePath = path.join(uploadConfig.directory, user.avatar);
       const userAvatarFileExists = fs.promises.stat(userAvatarFilePath);
 
-      if(userAvatarFileExists) {
+      if (userAvatarFileExists) {
         await fs.promises.unlink(userAvatarFilePath);
       }
     }
