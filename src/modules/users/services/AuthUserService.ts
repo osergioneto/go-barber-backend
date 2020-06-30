@@ -3,14 +3,18 @@ import { sign } from 'jsonwebtoken';
 import authConfig from '@config/auth';
 import AppError from '@shared/errors/AppError';
 import IUsersRepository from '../repositories/IUsersRepositories';
-
+import { inject, injectable } from 'tsyringe';
 interface Request {
   email: string;
   password: string;
 }
 
+@injectable()
 export default class AuthUserService {
-  constructor(private usersRepository: IUsersRepository) {}
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
+  ) {}
 
   public async execute({
     email,
