@@ -1,18 +1,9 @@
 import { Router } from 'express';
-import AuthUserService from '@modules/users/services/AuthUserService';
-import UsersRepository from '../../typeorm/repositories/UsersRepository';
-import { container } from 'tsyringe';
+import AuthController from "../controllers/AuthController";
 
 const authRouter = Router();
+const authController = new AuthController();
 
-authRouter.post('/', async (request, response) => {
-  const { email, password } = request.body;
-
-  const authUserService = container.resolve(AuthUserService);
-
-  const autheticatedUser = await authUserService.execute({ email, password });
-
-  return response.status(200).json(autheticatedUser);
-});
+authRouter.post('/', authController.auth);
 
 export default authRouter;
