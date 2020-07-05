@@ -1,7 +1,8 @@
-import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
+import 'reflect-metadata';
+import Appointment from '../infra/typeorm/entities/Appointment';
 import { startOfHour } from 'date-fns';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
-import AppError from '@shared/errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 interface IRequest {
   provider_id: string;
