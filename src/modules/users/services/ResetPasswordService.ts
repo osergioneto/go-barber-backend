@@ -18,5 +18,21 @@ export default class ResetPasswordService {
     private usersTokensRepository: IUserTokensRepository,
   ) {}
 
-  public async execute({ token, password }: Request): Promise<void> {}
+  public async execute({ token, password }: Request): Promise<void> {
+    const userToken = await this.usersTokensRepository.findByToken(token);
+
+    if (!userToken) {
+      throw new AppError('User token does not exists');
+    }
+
+    const user = await this.usersRepository.findById(userToken?.token);
+
+    if (!user) {
+      throw new AppError('User does not exists');
+    }
+
+    user.password = password;
+
+    await this.usersRepository.save(user);
+  }
 }
