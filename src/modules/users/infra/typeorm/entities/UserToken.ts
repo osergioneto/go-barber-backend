@@ -14,7 +14,7 @@ class User {
 
   @Column()
   @Generated('uuid')
-  name: string;
+  token: string;
 
   @Column()
   user_id: string;
