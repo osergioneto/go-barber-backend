@@ -4,15 +4,20 @@ import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import FakeStorageProvider from '@shared/container/providers/StorageProvider/fakes/FakeStorageProvider';
 import AppError from '@shared/errors/AppError';
 
+let fakeUsersRepository: FakeUsersRepository;
+let fakeStorageProvider: FakeStorageProvider;
+let uploadUserService: UploadAvatarService;
+
 describe('CreateUser', () => {
-  it('should be able to update avatar', async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeStorageProvider = new FakeStorageProvider();
-    const uploadUserService = new UploadAvatarService(
+  beforeEach(() => {
+    fakeUsersRepository = new FakeUsersRepository();
+    fakeStorageProvider = new FakeStorageProvider();
+    uploadUserService = new UploadAvatarService(
       fakeUsersRepository,
       fakeStorageProvider,
     );
-
+  });
+  it('should be able to update avatar', async () => {
     const user = await fakeUsersRepository.create({
       name: 'John Doe',
       email: 'johndoe@example.com',
@@ -28,14 +33,6 @@ describe('CreateUser', () => {
   });
 
   it('should not be able to update avatar', async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeStorageProvider = new FakeStorageProvider();
-
-    const uploadUserService = new UploadAvatarService(
-      fakeUsersRepository,
-      fakeStorageProvider,
-    );
-
     await expect(
       uploadUserService.execute({
         user_id: 'non-existing-user',
@@ -45,14 +42,7 @@ describe('CreateUser', () => {
   });
 
   it('should delete old avatar when updating new', async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeStorageProvider = new FakeStorageProvider();
     const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile');
-
-    const uploadUserService = new UploadAvatarService(
-      fakeUsersRepository,
-      fakeStorageProvider,
-    );
 
     const user = await fakeUsersRepository.create({
       name: 'John Doe',
