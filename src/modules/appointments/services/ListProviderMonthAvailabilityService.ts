@@ -2,6 +2,7 @@ import AppError from '@shared/errors/AppError';
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import { inject, injectable } from 'tsyringe';
 import User from '@modules/users/infra/typeorm/entities/User';
+import { getDaysInMonth, getDate } from 'date-fns';
 
 interface Request {
   provider_id: string;
@@ -30,8 +31,23 @@ export default class ListProviderMonthAvailabilityService {
       },
     );
 
-    console.log('appointments: ', appointments);
+    const numbersOfDaysInMonth = getDaysInMonth(new Date(year, month - 1));
+    const eachDayArray = Array.from(
+      { length: numbersOfDaysInMonth },
+      (value, index) => index + 1,
+    );
 
-    return appointments;
+    const availability = eachDayArray.map(day => {
+      const appointmentsInDay = appointments.filter(appointment => {
+        return getDate(appointment.date) === day;
+      });
+
+      return {
+        day,
+        available: appointmentsInDay.length < 10,
+      };
+    });
+
+    return availability;
   }
 }
