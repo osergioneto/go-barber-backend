@@ -10,6 +10,7 @@ import AppError from '@shared/errors/AppError';
 import IUsersRepository from '../repositories/IUsersRepositories';
 import { inject, injectable } from 'tsyringe';
 import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
+import { classToClass } from 'class-transformer';
 
 @injectable()
 export default class UploadAvatarService {
@@ -37,8 +38,6 @@ export default class UploadAvatarService {
 
     await this.usersRepository.save(user);
 
-    delete user.password;
-
-    return user;
+    return classToClass(user);
   }
 }
