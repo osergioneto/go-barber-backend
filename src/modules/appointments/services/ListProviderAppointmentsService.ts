@@ -19,7 +19,7 @@ export default class ListProviderAppointmentsService {
     private appointmentsRepository: IAppointmentsRepository,
 
     @inject('CacheProvider')
-    private cacheRepository: ICacheProvider,
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({
@@ -28,15 +28,19 @@ export default class ListProviderAppointmentsService {
     month,
     year,
   }: Request): Promise<Appointment[]> {
-    const cacheData = await this.cacheRepository.recover('asd');
+    const cacheKey = `provider-appointments:${provider_id}:${year}-${month}-${day}`;
 
-    console.log({ cacheData });
-
-    const appointments = await this.appointmentsRepository.findAllInDayFromProvider(
-      { day, month, year, provider_id },
+    let appointments = await this.cacheProvider.recover<Appointment[]>(
+      cacheKey,
     );
 
-    await this.cacheRepository.save('asd', '123');
+    if (!appointments) {
+      appointments = await this.appointmentsRepository.findAllInDayFromProvider(
+        { day, month, year, provider_id },
+      );
+
+      await this.cacheProvider.save(cacheKey, appointments);
+    }
 
     return appointments;
   }
