@@ -3,6 +3,7 @@ import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import AppError from '@shared/errors/AppError';
 import AuthUserService from './AuthUserService';
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 import CreateUserService from './CreateUserService';
 
@@ -10,17 +11,19 @@ let fakeUsersRepository: FakeUsersRepository;
 let fakeHashRepository: FakeHashProvider;
 let createUser: CreateUserService;
 let authUser: AuthUserService;
+let fakeCacheProvider: FakeCacheProvider;
 
 describe('Auth User', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeHashRepository = new FakeHashProvider();
-    createUser = new CreateUserService(fakeUsersRepository, fakeHashRepository);
+    fakeCacheProvider = new FakeCacheProvider();
+
     authUser = new AuthUserService(fakeUsersRepository, fakeHashRepository);
   });
 
   it('should be able to auth a user', async () => {
-    const user = await createUser.execute({
+    const user = await fakeUsersRepository.create({
       name: 'John Doe',
       email: 'johndoe@example.com',
       password: '123456',
@@ -36,7 +39,7 @@ describe('Auth User', () => {
   });
 
   it('should throw error with inexistent email', async () => {
-    await createUser.execute({
+    await fakeUsersRepository.create({
       name: 'John Doe',
       email: 'johndoe@example.com',
       password: '123456',
@@ -51,7 +54,7 @@ describe('Auth User', () => {
   });
 
   it('should throw error when auth wrong email/password', async () => {
-    await createUser.execute({
+    await fakeUsersRepository.create({
       name: 'John Doe',
       email: 'johndoe@example.com',
       password: '123456',
