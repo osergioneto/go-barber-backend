@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import 'dotenv/config'
+import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import 'express-async-errors';
@@ -9,9 +9,11 @@ import '@shared/container';
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
 import { errors } from 'celebrate';
+import rateLimiterMiddleware from '../middlewares/rateLimiter';
 
 const app = express();
 
+app.use(rateLimiterMiddleware);
 app.use(cors());
 app.use(express.json());
 app.use('/files', express.static(uploadConfig.uploadsFolder));
