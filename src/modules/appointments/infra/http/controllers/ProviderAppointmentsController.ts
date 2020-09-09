@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import ListProviderAppointmentsService from '@modules/appointments/services/ListProviderAppointmentsService';
 import { parseISO } from 'date-fns';
+import { classToClass } from 'class-transformer';
 
 export default class ProviderAppointmentsController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -19,6 +20,6 @@ export default class ProviderAppointmentsController {
       year: Number(year),
     });
 
-    return response.status(201).json(appointments);
+    return response.status(201).json(classToClass(appointments));
   }
 }

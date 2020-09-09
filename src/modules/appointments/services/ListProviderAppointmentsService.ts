@@ -4,6 +4,7 @@ import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICa
 import { inject, injectable } from 'tsyringe';
 import User from '@modules/users/infra/typeorm/entities/User';
 import Appointment from '../infra/typeorm/entities/Appointment';
+import { classToClass } from 'class-transformer';
 
 interface Request {
   provider_id: string;
@@ -39,7 +40,7 @@ export default class ListProviderAppointmentsService {
         { day, month, year, provider_id },
       );
 
-      await this.cacheProvider.save(cacheKey, appointments);
+      await this.cacheProvider.save(cacheKey, classToClass(appointments));
     }
 
     return appointments;
